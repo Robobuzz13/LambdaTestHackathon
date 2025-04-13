@@ -45,8 +45,8 @@ public class LambdaTestDriverManager extends DriverManager {
         browserOptions.setCapability(CapabilityType.BROWSER_VERSION, getEnvOrLambdaConfig("lt.browserVersion", LambdaTestConfig::getBrowserVersion));
 
         HashMap<String, Object> ltOptions = new HashMap<>();
-        ltOptions.put("username", System.getenv("LT_USERNAME"));
-        ltOptions.put("accessKey", System.getenv("LT_ACCESS_KEY"));
+        ltOptions.put("username", System.getProperty("LT_USERNAME"));
+        ltOptions.put("accessKey", System.getProperty("LT_ACCESS_KEY"));
         ltOptions.put("geoLocation", getEnvOrLambdaConfig("lt.geoLocation", LambdaTestConfig::getGeoLocation));
         ltOptions.put("visual", getEnvOrLambdaConfigBoolean("lt.visual", LambdaTestConfig::isVisualEnabled));
         ltOptions.put("video", getEnvOrLambdaConfigBoolean("lt.video", LambdaTestConfig::isVideoEnabled));
@@ -77,17 +77,17 @@ public class LambdaTestDriverManager extends DriverManager {
     }
 
     private String getEnvOrLambdaConfig(String key, Supplier<String> fallback) {
-        String env = System.getenv(key);
+        String env = System.getProperty(key);
         return (env != null && !env.isEmpty()) ? env : fallback.get();
     }
 
     private Boolean getEnvOrLambdaConfigBoolean(String key, Supplier<Boolean> fallback) {
-        String env = System.getenv(key);
+        String env = System.getProperty(key);
         return (env != null && !env.isEmpty()) ? Boolean.parseBoolean(env) : fallback.get();
     }
 
     private String[] getEnvOrListConfig(String envKey, Supplier<List<String>> fallbackSupplier) {
-        String value = System.getenv(envKey);
+        String value = System.getProperty(envKey);
         return (value != null && !value.isEmpty())
                 ? value.split(",")
                 : fallbackSupplier.get().toArray(new String[0]);

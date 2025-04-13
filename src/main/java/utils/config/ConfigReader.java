@@ -17,7 +17,7 @@ public class ConfigReader {
         String key = fileName.toLowerCase();
         if (loadedProperties.containsKey(key)) return;
 
-        String filePath = "src/test/resources/config/" + key + ".properties";
+        String filePath = "src/main/resources/config/" + key + ".properties";
         try (FileInputStream input = new FileInputStream(filePath)) {
             Properties props = new Properties();
             props.load(input);
