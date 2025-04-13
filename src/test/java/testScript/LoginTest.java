@@ -32,7 +32,7 @@ public class LoginTest {
 
     @Test()
     public void testValidLogin() {
-        loginPage.loginAs(ConfigRead.get("loginUser"), "SuperSecretPassword!");
+        loginPage.loginAs(ConfigRead.get("loginUser"), System.getProperty("LOGIN_PASSWORD"));
         Log.message("Login attempted with valid credentials.");
         loginPage.assertSuccessMessage(ConfigRead.get("successLoginMessage"));
         loginPage.clickLogout();

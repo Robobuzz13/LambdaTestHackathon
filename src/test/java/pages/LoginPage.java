@@ -62,13 +62,13 @@ public class LoginPage {
     public void assertSuccessMessage(String successMessage) {
         Log.logAssertTrue(utils.waitForVisibility(flashMessage).getText().trim()
                 .contains(successMessage), "Success message is displayed",
-                "Success message is not displayed");
+                "Success message is not displayed", driver);
     }
 
     public void assertFailureMessage(String failMessage) {
         Log.logAssertTrue(utils.waitForVisibility(flashMessage).getText().trim()
                         .contains(failMessage), "Fail message is displayed",
-                "Fail message is not displayed");
+                "Fail message is not displayed", driver);
     }
 
 }

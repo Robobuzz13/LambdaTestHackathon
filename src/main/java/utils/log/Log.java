@@ -1,9 +1,17 @@
 package utils.log;
 
+import com.aventstack.extentreports.markuputils.ExtentColor;
+import com.aventstack.extentreports.markuputils.Markup;
+import com.aventstack.extentreports.markuputils.MarkupHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.ITestResult;
+import org.testng.SkipException;
+import utils.report.ExtentReport;
+
+import java.util.Arrays;
 
 public class Log {
 
@@ -17,6 +25,7 @@ public class Log {
      */
     public static void message(String description) {
         logger.info(description);
+        ExtentReport.info(description);
     }
 
     /**
@@ -26,6 +35,7 @@ public class Log {
      */
     public static void info(String description) {
         logger.info(description);
+        ExtentReport.info(description);
     }
 
     /**
@@ -45,6 +55,27 @@ public class Log {
      */
     public static void pass(String message) {
         logger.info(message);
+        Markup m = MarkupHelper.createLabel("<b><i>"+message+"</i></b>", ExtentColor.GREEN);
+        ExtentReport.pass(m);
+    }
+
+    public static void pass(ITestResult result) {
+        String logText = "Test Method "+ result.getMethod().getMethodName() + " Passed";
+        Markup m = MarkupHelper.createLabel("<b><i>"+logText+"</i></b>", ExtentColor.GREEN);
+        ExtentReport.pass(m);
+        logger.info(logText);
+        logger.info("****             " + "-Assert Passed Test--case--Execution--Ended--" + "             *****");
+    }
+
+    public static void skip(ITestResult result) {
+
+        String exceptionMessage = Arrays.toString(result.getThrowable().getStackTrace());
+        String skipExceptionMessage = "Exception Occured, click to see details:";
+        Markup m = MarkupHelper.createLabel("<details><summary><b><font color=orange>\" + \n"
+                + "				\"Exception Occured, click to see details:\" + \"</font></b></summary>\" + \n"
+                + "				exceptionMessage.replaceAll(\",\", \"<br>\") + \"</details> \\n", ExtentColor.YELLOW);
+        ExtentReport.skip(m);
+        logger.info("****             " + "-Assert Skipped Test--case--Execution--Ended--" + "             *****");
     }
 
     /**
@@ -52,8 +83,20 @@ public class Log {
      *
      * @param message custom message in the test case
      */
-    public static void fail(String message) {
+    public static void fail(String message, WebDriver driver) {
+        Markup m = MarkupHelper.createLabel("<b><i>"+message+"</i></b>", ExtentColor.RED);
+        ExtentReport.fail(m, driver);
         logger.error(message);
+    }
+
+    public static void fail(ITestResult result) {
+        String exceptionMessage = result.getThrowable().getMessage();
+        String skipExceptionMessage = "Exception Occured, click to see details:";
+        String exceptionTrace = Arrays.toString(result.getThrowable().getStackTrace());
+        Markup m = MarkupHelper.createLabel("<details><summary><b><font color=orange>" + "Exception Occured, click to see details:" + "</font></b></summary>" + exceptionMessage.replaceAll(",", "<br>") + "<br>" + exceptionTrace.replaceAll(",", "<br>") + "</details> \n", ExtentColor.RED);
+        ExtentReport.fail(m);
+        logger.error(skipExceptionMessage+" "+exceptionMessage);
+        logger.info("****             " + "-Assert Failed Test--case--Execution--Ended--" + "             *****");
     }
 
     /**
@@ -63,48 +106,49 @@ public class Log {
      */
     public static void exception(Exception e) {
         logger.error(e.getMessage());
+        ExtentReport.skip(e.getMessage());
     }
 
-    public static void logAssertTrue(boolean condition, String message, String failMessage) {
+    public static void logAssertTrue(boolean condition, String message, String failMessage, WebDriver driver) {
         if(condition) {
             Assert.assertTrue(condition, message);
             pass(message);
         }else {
             Assert.assertTrue(condition, failMessage);
-            fail(failMessage);
+            fail(failMessage, driver);
         }
 
     }
 
-    public static void logAssertFalse(boolean condition, String message, String failMessage) {
+    public static void logAssertFalse(boolean condition, String message, String failMessage, WebDriver driver) {
         if(!condition) {
             Assert.assertFalse(condition, message);
             pass(message);
         }else {
             Assert.assertFalse(condition, failMessage);
-            fail(failMessage);
+            fail(failMessage, driver);
         }
 
     }
 
-    public static void logAssertEqual(boolean actual, boolean expected, String message, String failMessage) {
+    public static void logAssertEqual(boolean actual, boolean expected, String message, String failMessage, WebDriver driver) {
         if(Boolean.valueOf(actual).equals(Boolean.valueOf(expected))) {
             Assert.assertEquals(actual, expected, message);
             pass(message);
         }else {
             Assert.fail(message);
-            fail(failMessage);
+            fail(failMessage, driver);
         }
 
     }
 
-    public static void logAssertEqual(String actual, String expected, String message, String failMessage) {
+    public static void logAssertEqual(String actual, String expected, String message, String failMessage, WebDriver driver) {
         if(actual.equals(expected)) {
             Assert.assertEquals(actual, expected, message);
             pass(message);
         }else {
             Assert.fail(message);
-            fail(failMessage);
+            fail(failMessage, driver);
         }
 
     }
@@ -117,6 +161,7 @@ public class Log {
         logger.info("****             " + "-Test--Case--Started--" + "             *****");
         logger.info("Test Method Name :"+result.getMethod().getMethodName());
         logger.info("Test Description :"+result.getMethod().getDescription());
+        ExtentReport.extentTestStart(result);
     }
 
     /**
@@ -125,5 +170,6 @@ public class Log {
      */
     public static void testEnd() {
         logger.info("****             " + "-Test--Execution--Ended--" + "             *****");
+        ExtentReport.flushReports();
     }
 }

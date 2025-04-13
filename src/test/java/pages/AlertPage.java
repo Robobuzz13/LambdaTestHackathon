@@ -60,6 +60,6 @@ public class AlertPage {
     public void assertSuccessMessage(String resultMessage) {
         Log.logAssertTrue(utils.waitForVisibility(resultText).getText().trim()
                         .contains(resultMessage), "Result message is displayed",
-                "Result message is not displayed");
+                "Result message is not displayed", driver);
     }
 }
