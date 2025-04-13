@@ -3,7 +3,7 @@ package listeners;
 import org.testng.IRetryAnalyzer;
 import org.testng.ITestResult;
 
-public class RetryListner implements IRetryAnalyzer {
+public class RetryListener implements IRetryAnalyzer {
 
     private int count = 0;
     private final int MAX_TRY = 3;

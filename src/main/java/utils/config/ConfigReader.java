@@ -23,7 +23,7 @@ public class ConfigReader {
             props.load(input);
             loadedProperties.put(key, props);
             if (currentFileName == null) currentFileName = key; // Set default
-            Log.info("[ConfigReader] Loaded config file: " + filePath);
+            Log.debug("[ConfigReader] Loaded config file: " + filePath);
         } catch (IOException e) {
             Log.exception(e);
             throw new RuntimeException("Failed to load config file: " + filePath, e);

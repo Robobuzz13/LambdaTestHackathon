@@ -6,14 +6,6 @@ import utils.log.Log;
 public class TestListener implements ITestListener, ISuiteListener {
 
     /**
-     *Method to executed while starting test suite run
-     */
-    @Override
-    public void onStart(ISuite suite) {
-        Log.info("Starting Mobile Suite" + suite.getName());
-    }
-
-    /**
      *Method to executed while starting test case run
      */
     @Override

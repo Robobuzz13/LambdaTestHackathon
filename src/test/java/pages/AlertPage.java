@@ -33,32 +33,32 @@ public class AlertPage {
 
     // Actions
     public void triggerJSAlertAndAccept() {
-        utils.waitForClickable(jsAlertButton).click();
+        utils.waitForClickable(jsAlertButton, "alert button").click();
         utils.acceptAlert();
     }
 
     public void triggerJSConfirmAndAccept() {
-        utils.waitForClickable(jsConfirmButton).click();
+        utils.waitForClickable(jsConfirmButton, "confirm button").click();
         utils.acceptAlert();
     }
 
     public void triggerJSConfirmAndDismiss() {
-        utils.waitForClickable(jsConfirmButton).click();
+        utils.waitForClickable(jsConfirmButton, "dismiss button").click();
         utils.dismissAlert();
     }
 
     public void triggerJSPromptAndSendText(String input) {
-        utils.waitForClickable(jsPromptButton).click();
+        utils.waitForClickable(jsPromptButton, "prompt button").click();
         utils.sendTextToAlert(input);
         utils.acceptAlert();
     }
 
     public String getResultText() {
-        return utils.waitForVisibility(resultText).getText();
+        return utils.waitForVisibility(resultText, "Result message").getText();
     }
 
     public void assertSuccessMessage(String resultMessage) {
-        Log.logAssertTrue(utils.waitForVisibility(resultText).getText().trim()
+        Log.logAssertTrue(utils.waitForVisibility(resultText, "Result message").getText().trim()
                         .contains(resultMessage), "Result message is displayed",
                 "Result message is not displayed", driver);
     }

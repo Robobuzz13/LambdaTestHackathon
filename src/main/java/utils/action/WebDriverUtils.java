@@ -23,48 +23,48 @@ public class WebDriverUtils {
     }
 
     // Wait utilities
-    public WebElement waitForVisibility(WebElement element) {
-        Log.info("Waiting for visibility of element: " + element);
+    public WebElement waitForVisibility(WebElement element, String elementName) {
+        Log.info("Waiting for visibility of element: " + elementName);
         return wait.until(ExpectedConditions.visibilityOf(element));
     }
 
-    public WebElement waitForClickable(WebElement element) {
-        Log.info("Waiting for element to be clickable: " + element);
+    public WebElement waitForClickable(WebElement element, String elementName) {
+        Log.info("Waiting for element to be clickable: " + elementName);
         return wait.until(ExpectedConditions.elementToBeClickable(element));
     }
 
-    public boolean waitForInvisibility(WebElement element) {
-        Log.info("Waiting for invisibility of element: " + element);
+    public boolean waitForInvisibility(WebElement element, String elementName) {
+        Log.info("Waiting for invisibility of element: " + elementName);
         return wait.until(ExpectedConditions.invisibilityOf(element));
     }
 
     // Keyboard actions
-    public void pressEnter(WebElement element) {
-        Log.info("Pressing ENTER on element: " + element);
-        waitForVisibility(element).sendKeys(Keys.ENTER);
+    public void pressEnter(WebElement element, String elementName) {
+        Log.info("Pressing ENTER on element: " + elementName);
+        waitForVisibility(element, elementName).sendKeys(Keys.ENTER);
     }
 
-    public void typeText(WebElement element, String text) {
-        Log.info("Typing text '" + text + "' into element: " + element);
-        WebElement visibleElement = waitForVisibility(element);
+    public void typeText(WebElement element, String text, String elementName) {
+        Log.info("Typing text '" + text + "' into element: " + elementName);
+        WebElement visibleElement = waitForVisibility(element, elementName);
         visibleElement.clear();
         visibleElement.sendKeys(text);
     }
 
     // Mouse actions
-    public void hoverOverElement(WebElement element) {
-        Log.info("Hovering over element: " + element);
-        actions.moveToElement(waitForVisibility(element)).perform();
+    public void hoverOverElement(WebElement element, String elementName) {
+        Log.info("Hovering over element: " + elementName);
+        actions.moveToElement(waitForVisibility(element, elementName)).perform();
     }
 
-    public void rightClick(WebElement element) {
-        Log.info("Right-clicking on element: " + element);
-        actions.contextClick(waitForVisibility(element)).perform();
+    public void rightClick(WebElement element, String elementName) {
+        Log.info("Right-clicking on element: " + elementName);
+        actions.contextClick(waitForVisibility(element, elementName)).perform();
     }
 
-    public void doubleClick(WebElement element) {
-        Log.info("Double-clicking on element: " + element);
-        actions.doubleClick(waitForVisibility(element)).perform();
+    public void doubleClick(WebElement element, String elementName) {
+        Log.info("Double-clicking on element: " + elementName);
+        actions.doubleClick(waitForVisibility(element, elementName)).perform();
     }
 
     // Alert handling
@@ -93,24 +93,13 @@ public class WebDriverUtils {
     }
 
     // Frame actions
-    public void switchToFrame(WebElement frame) {
+    public void switchToFrame(WebElement frame, String elementName) {
         Log.info("Switching to frame: " + frame);
-        driver.switchTo().frame(waitForVisibility(frame));
+        driver.switchTo().frame(waitForVisibility(frame, elementName));
     }
 
     public void switchToDefaultContent() {
         Log.info("Switching to default content");
         driver.switchTo().defaultContent();
-    }
-
-    // Drag and drop
-    public void dragAndDrop(WebElement source, WebElement target) {
-        Log.info("Dragging element from " + source + " to " + target);
-        actions.dragAndDrop(waitForVisibility(source), waitForVisibility(target)).perform();
-    }
-
-    public void dragAndDropByOffset(WebElement element, int xOffset, int yOffset) {
-        Log.info("Dragging element " + element + " by offset X: " + xOffset + ", Y: " + yOffset);
-        actions.dragAndDropBy(waitForVisibility(element), xOffset, yOffset).perform();
     }
 }

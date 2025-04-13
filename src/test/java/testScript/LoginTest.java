@@ -7,6 +7,7 @@ import enums.EnvironmentType;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.LoginPage;
 import utils.ConfigRead;
@@ -19,11 +20,14 @@ public class LoginTest {
     private DriverManager driverManager;
 
     @BeforeMethod
-    public void setUp() {
-        EnvironmentType environment = EnvironmentType.LAMBDA_TEST;
-        DriverType browser = DriverType.CHROME;
+    @Parameters({"environmentValue", "browserValue"})
+    public void setUp(String environmentValue, String browserValue) {
+        EnvironmentType envType = (environmentValue == null || environmentValue.isEmpty()) ?
+                EnvironmentType.LAMBDA_TEST : EnvironmentType.valueOf(environmentValue.toUpperCase());
+        DriverType browserType = (browserValue == null || browserValue.isEmpty()) ?
+                DriverType.CHROME : DriverType.valueOf(browserValue.toUpperCase());
 
-        driverManager = DriverFactory.getManager(environment, browser);
+        driverManager = DriverFactory.getManager(envType, browserType);
         driver = driverManager.getDriver();
 
         driver.get(ConfigRead.get("loginUrl"));

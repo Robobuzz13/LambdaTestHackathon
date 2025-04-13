@@ -36,21 +36,21 @@ public class LoginPage {
 
     // Actions
     public void enterUsername(String username) {
-        utils.waitForVisibility(usernameInput).clear();
+        utils.waitForVisibility(usernameInput, "username field").clear();
         usernameInput.sendKeys(username);
     }
 
     public void enterPassword(String password) {
-        utils.waitForVisibility(passwordInput).clear();
+        utils.waitForVisibility(passwordInput, "password field").clear();
         passwordInput.sendKeys(password);
     }
 
     public void clickLogin() {
-        utils.waitForClickable(loginButton).click();
+        utils.waitForClickable(loginButton, "login button").click();
     }
 
     public void clickLogout() {
-        utils.waitForClickable(logOutButton).click();
+        utils.waitForClickable(logOutButton, "logout button").click();
     }
 
     public void loginAs(String username, String password) {
@@ -60,13 +60,13 @@ public class LoginPage {
     }
 
     public void assertSuccessMessage(String successMessage) {
-        Log.logAssertTrue(utils.waitForVisibility(flashMessage).getText().trim()
+        Log.logAssertTrue(utils.waitForVisibility(flashMessage, "Flash message").getText().trim()
                 .contains(successMessage), "Success message is displayed",
                 "Success message is not displayed", driver);
     }
 
     public void assertFailureMessage(String failMessage) {
-        Log.logAssertTrue(utils.waitForVisibility(flashMessage).getText().trim()
+        Log.logAssertTrue(utils.waitForVisibility(flashMessage, "flash message").getText().trim()
                         .contains(failMessage), "Fail message is displayed",
                 "Fail message is not displayed", driver);
     }

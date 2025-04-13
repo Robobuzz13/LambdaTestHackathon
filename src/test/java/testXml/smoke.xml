@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="Suite">
+<suite name="Herokuapp" parallel="tests" thread-count="2">
     <listeners>
         <listener class-name="listeners.TestListener"/>
+        <listener class-name="listeners.RetryListener"/>
     </listeners>
-    <test name="Herokuapp" thread-count="1" >
+    <test name="LoginTest">
+        <parameter name="environmentValue" value="LAMBDA_TEST"/>
+        <parameter name="browserValue" value="CHROME"/>
         <classes>
             <class name="testScript.LoginTest"/>
+        </classes>
+    </test>
+    <test name="AlertTest">
+        <parameter name="environmentValue" value="LAMBDA_TEST"/>
+        <parameter name="browserValue" value="CHROME"/>
+        <classes>
             <class name="testScript.AlertTest"/>
         </classes>
     </test>
